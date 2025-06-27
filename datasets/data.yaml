@@ -1,0 +1,6 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 9
+names: ['can', 'changepolarity', 'cigar', 'doubledamage', 'expired-medicine', 'handcuff', 'inventorybox', 'lens', 'phone']

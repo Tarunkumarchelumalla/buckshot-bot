@@ -1,73 +1,64 @@
 import pyautogui
-import pytesseract
-import time
-from PIL import Image
 import cv2
 import numpy as np
 import pygetwindow as gw
-import os
+from ultralytics import YOLO
+from collections import Counter
+import time
 
-# Set this manually if Tesseract is not in PATH
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# Load your trained YOLOv8 model
+model = YOLO("runs/detect/train8/weights/best.pt")  # Update the path if needed
 
-# Load templates once
-TEMPLATE_FOLDER = "templates"
-TEMPLATES = {f.split('.')[0]: cv2.imread(os.path.join(TEMPLATE_FOLDER, f), 0) 
-             for f in os.listdir(TEMPLATE_FOLDER) if f.endswith(('.png', '.jpg'))}
+def get_window_region(title):
+    windows = gw.getWindowsWithTitle(title)
+    if not windows:
+        print("❌ Game window not found!")
+        return None
+    w = windows[0]
+    return (w.left, w.top, w.width, w.height)
 
-def get_window_region(window_title):
-    try:
-        window = gw.getWindowsWithTitle(window_title)[0]
-        if not window.isMinimized:
-            return (window.left, window.top, window.width, window.height)
-    except IndexError:
-        print(f"Window '{window_title}' not found.")
-    return None
+def detect_objects_in_region(region):
+    x, y, w, h = region
+    screenshot = pyautogui.screenshot(region=(x, y, w, h))
+    frame = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
 
-def get_text_from_screen(region):
-    screenshot = pyautogui.screenshot(region=region)
-    screenshot_cv = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-    text = pytesseract.image_to_string(screenshot_cv)
-    print("📝 Extracted Text:", text.strip())
-    return text.strip(), screenshot_cv
+    results = model.predict(source=frame, conf=0.4, verbose=False)[0]
+    print({results})
+    objects = []
+    for box in results.boxes:
+        cls_id = int(box.cls[0])
+        label = model.names[cls_id]
+        conf = float(box.conf[0])
+        x1, y1, x2, y2 = map(int, box.xyxy[0])
+        objects.append({
+            "label": label,
+            "confidence": round(conf, 2),
+            "bbox": [x1, y1, x2, y2]
+        })
+    return objects
 
-def match_items_on_screen(screen_gray, base_x, base_y):
-    found_items = []
-    for name, template in TEMPLATES.items():
-        result = cv2.matchTemplate(screen_gray, template, cv2.TM_CCOEFF_NORMED)
-        threshold = 0.8  # Adjust this if needed
-        loc = np.where(result >= threshold)
-        for pt in zip(*loc[::-1]):
-            found_items.append((name, pt))
-            print(f"🔍 Found item: {name} at {pt}")
-            # Optional: Click on item
-            # pyautogui.click(base_x + pt[0], base_y + pt[1])
-    return found_items
+def print_detections(objects):
+    if not objects:
+        print("🔍 No objects detected.")
+        return
 
-def perform_action_based_on_text(text, base_x, base_y):
-    if "Your Turn" in text:
-        print("🎯 Action: Your Turn — clicking fire button")
-        pyautogui.click(x=base_x + 200, y=base_y + 300)
-    elif "Pass" in text:
-        print("🎯 Action: Pass — clicking pass button")
-        pyautogui.click(x=base_x + 400, y=base_y + 300)
-    else:
-        print("🚫 No matching text for action.")
+    print("\n📦 Detected Objects:")
+    for obj in objects:
+        print(f"  - {obj['label']} | Confidence: {obj['confidence']} | Box: {obj['bbox']}")
 
-# Set your game window title
-window_title = "Buckshot Roulette"
+    counts = dict(Counter([obj["label"] for obj in objects]))
+    print("\n🔢 Object Counts:")
+    for label, count in counts.items():
+        print(f"  - {label}: {count}")
 
-while True:
-    region = get_window_region(window_title)
-    if region:
-        x, y, w, h = region
-        text, screenshot_color = get_text_from_screen((x, y, w, h))
-
-        # OCR-based decisions
-        perform_action_based_on_text(text, x, y)
-
-        # Template matching on grayscale version
-        screenshot_gray = cv2.cvtColor(screenshot_color, cv2.COLOR_BGR2GRAY)
-        match_items_on_screen(screenshot_gray, x, y)
-
-    time.sleep(2)
+if __name__ == "__main__":
+    window_title = "Buckshot Roulette"
+    print("🎮 Watching for game window...")
+    while True:
+        region = get_window_region(window_title)
+        if region:
+            objects = detect_objects_in_region(region)
+            print_detections(objects)
+        else:
+            print("⌛ Retrying in 2 seconds...")
+        time.sleep(2)
