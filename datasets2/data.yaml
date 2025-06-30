@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 12
+names: ['ally', 'can', 'cigar', 'door', 'doubledamage', 'emptyspace', 'enemyspace', 'gun', 'handcuff', 'inventorybox', 'lens', 'startbtn']
+
+roboflow:
+  workspace: one-punch-o6o4r
+  project: my-first-project-3upmn
+  version: 2
+  license: Private
+  url: https://app.roboflow.com/one-punch-o6o4r/my-first-project-3upmn/2
