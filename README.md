@@ -99,7 +99,7 @@ Pull requests are welcome! If you have cool ideas like better chat parsing, Twit
 
 ## 📺 Watch it Live
 
-> 🔴 **YouTube:** [Test #3 – BuckShot Roulette Live AI Bot]([https://youtube.com/your-video-link](https://www.youtube.com/watch?v=GfU5hpaR2vI))
+> 🔴 **YouTube:** [Test #3 – BuckShot Roulette Live AI Bot]([https://youtube.com/your-video-link](https://www.youtube.com/watch?v=GfU5hpaR2vI)
 
 ---
 
