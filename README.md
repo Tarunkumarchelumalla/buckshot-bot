@@ -1,5 +1,5 @@
 
-# 🎮 BuckShot Roulette - AI Gameplay Automation (Test #3)
+# 🎮 BuckShot Roulette - AI Gameplay Automation
 
 Welcome to **Test #3** of our experimental gameplay automation series for **BuckShot Roulette**, a psychological horror game. This project showcases the use of AI and automation to interact with and control gameplay in real-time based on live YouTube chat commands.
 
@@ -99,11 +99,11 @@ Pull requests are welcome! If you have cool ideas like better chat parsing, Twit
 
 ## 📺 Watch it Live
 
-> 🔴 **YouTube:** [Test #3 – BuckShot Roulette Live AI Bot](https://youtube.com/your-video-link)
+> 🔴 **YouTube:** [Test #3 – BuckShot Roulette Live AI Bot]([https://youtube.com/your-video-link](https://www.youtube.com/watch?v=GfU5hpaR2vI))
 
 ---
 
 ## 👨‍💻 Author
 
 **Tarun** – Full Stack Developer & AI Automation Enthusiast  
-📧 [tarun.email@example.com](mailto:tarun.email@example.com)
+📧 [tarun.email@example.com](mailto:tarunchelumalla@gmail.com)
