@@ -47,7 +47,7 @@ This project demonstrates how artificial intelligence, computer vision, and auto
 
 1. **Clone this repository**
    ```bash
-   git clone https://github.com/yourusername/buckshot-ai-automation.git
+   git clone https://github.com/Tarunkumarchelumalla/buckshot-bot
    cd buckshot-ai-automation
    ```
 
