@@ -106,4 +106,4 @@ Pull requests are welcome! If you have cool ideas like better chat parsing, Twit
 ## 👨‍💻 Author
 
 **Tarun** – Full Stack Developer & AI Automation Enthusiast  
-📧 [tarun.email@example.com](mailto:tarunchelumalla@gmail.com)
+📧 [tarun.chelumalla@gmail.com.com](mailto:tarunchelumalla@gmail.com)
