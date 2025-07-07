@@ -61,7 +61,7 @@ This project demonstrates how artificial intelligence, computer vision, and auto
 
 4. **Run the bot**
    ```bash
-   python main.py
+   python ytbot.py
    ```
 
 ---
